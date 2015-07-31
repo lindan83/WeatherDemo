@@ -3,24 +3,39 @@ package com.studyandroid.weatherdemo.com.studyandroid.weatherdemo.entity;
 import java.io.Serializable;
 
 public class Province implements Serializable {
-    private String provinceId;
+    private Integer provinceId;
+    private String provinceCode;
     private String provinceName;
 
     public Province() {
 
     }
 
-    public Province(String provinceId, String provinceName) {
+    public Province(Integer provinceId, String provinceCode, String provinceName) {
         this.provinceId = provinceId;
+        this.provinceCode = provinceCode;
         this.provinceName = provinceName;
     }
 
-    public String getProvinceId() {
+    public Province(String provinceCode, String provinceName) {
+        this.provinceCode = provinceCode;
+        this.provinceName = provinceName;
+    }
+
+    public Integer getProvinceId() {
         return provinceId;
     }
 
-    public void setProvinceId(String provinceId) {
+    public void setProvinceId(Integer provinceId) {
         this.provinceId = provinceId;
+    }
+
+    public String getProvinceCode() {
+        return provinceCode;
+    }
+
+    public void setProvinceCode(String provinceCode) {
+        this.provinceCode = provinceCode;
     }
 
     public String getProvinceName() {
@@ -33,7 +48,7 @@ public class Province implements Serializable {
 
     @Override
     public String toString() {
-        return provinceId + "|" + provinceName;
+        return provinceCode + "|" + provinceName;
     }
 
     @Override
@@ -45,6 +60,8 @@ public class Province implements Serializable {
 
         if (provinceId != null ? !provinceId.equals(province.provinceId) : province.provinceId != null)
             return false;
+        if (provinceCode != null ? !provinceCode.equals(province.provinceCode) : province.provinceCode != null)
+            return false;
         return !(provinceName != null ? !provinceName.equals(province.provinceName) : province.provinceName != null);
 
     }
@@ -52,6 +69,7 @@ public class Province implements Serializable {
     @Override
     public int hashCode() {
         int result = provinceId != null ? provinceId.hashCode() : 0;
+        result = 31 * result + (provinceCode != null ? provinceCode.hashCode() : 0);
         result = 31 * result + (provinceName != null ? provinceName.hashCode() : 0);
         return result;
     }
