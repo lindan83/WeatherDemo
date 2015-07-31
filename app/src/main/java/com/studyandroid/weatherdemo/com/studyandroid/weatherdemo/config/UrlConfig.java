@@ -10,11 +10,11 @@ public class UrlConfig {
     /**
      * 获取指定城市的天气服务URL
      *
-     * @param cityId 城市代码
+     * @param cityCode 城市代码
      * @return
      */
-    public static String getWeatherServiceCityURL(String cityId) {
-        return WEATHER_SERVICE_AREA_BASE_URL + "city" + cityId + WEATHER_SERVICE_AREA_URL_SUFFIX;
+    public static String getWeatherServiceCityURL(String cityCode) {
+        return WEATHER_SERVICE_AREA_BASE_URL + "city" + cityCode + WEATHER_SERVICE_AREA_URL_SUFFIX;
     }
 
     /**

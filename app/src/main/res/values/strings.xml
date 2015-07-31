@@ -1,6 +1,7 @@
 <resources>
-    <string name="app_name">WeatherDemo</string>
+    <string name="app_name">天气预报Demo</string>
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="title_activity_choose_area">地区选择</string>
 </resources>

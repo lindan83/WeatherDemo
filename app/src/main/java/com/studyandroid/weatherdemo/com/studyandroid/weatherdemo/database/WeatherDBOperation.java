@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.studyandroid.weatherdemo.WeatherApplication;
 import com.studyandroid.weatherdemo.com.studyandroid.weatherdemo.config.SqlConfig;
 import com.studyandroid.weatherdemo.com.studyandroid.weatherdemo.entity.City;
 import com.studyandroid.weatherdemo.com.studyandroid.weatherdemo.entity.County;
@@ -22,14 +23,10 @@ public class WeatherDBOperation {
     private WeatherDataBaseHelper dbHelper;
     private SQLiteDatabase database;
 
-    private WeatherDBOperation(Context context) {
-        this.context = context;
+    private WeatherDBOperation() {
+        this.context = WeatherApplication.getContext();
         dbHelper = new WeatherDataBaseHelper(this.context, SqlConfig.DB_NAME, null, SqlConfig.DB_VERSION);
         database = dbHelper.getWritableDatabase();
-    }
-
-    private WeatherDBOperation() {
-
     }
 
     public synchronized static WeatherDBOperation getInstance() {
@@ -95,8 +92,8 @@ public class WeatherDBOperation {
      *
      * @return 城市列表
      */
-    public List<City> loadCities() {
-        Cursor cursor = database.query(SqlConfig.TABLE_NAME_CITY, null, null, null, null, null, null);
+    public List<City> loadCities(int provinceId) {
+        Cursor cursor = database.query(SqlConfig.TABLE_NAME_CITY, null, SqlConfig.TABLE_COLUMN_NAME_CITY_PID + "=?", new String[]{"" + provinceId}, null, null, null);
         if (cursor != null) {
             ArrayList<City> cities = new ArrayList<>();
             while (cursor.moveToNext()) {
@@ -104,7 +101,7 @@ public class WeatherDBOperation {
                 city.setCityId(cursor.getInt(cursor.getColumnIndex(SqlConfig.TABLE_COLUMN_NAME_CITY_ID)));
                 city.setCityName(cursor.getString(cursor.getColumnIndex(SqlConfig.TABLE_COLUMN_NAME_CITY_NAME)));
                 city.setCityCode(cursor.getString(cursor.getColumnIndex(SqlConfig.TABLE_COLUMN_NAME_CITY_CODE)));
-                city.setProvinceId(cursor.getInt(cursor.getColumnIndex(SqlConfig.TABLE_COLUMN_NAME_PROVINCE_ID)));
+                city.setProvinceId(cursor.getInt(cursor.getColumnIndex(SqlConfig.TABLE_COLUMN_NAME_CITY_PID)));
                 cities.add(city);
             }
             cursor.close();
@@ -133,8 +130,8 @@ public class WeatherDBOperation {
      *
      * @return 县镇列表
      */
-    public List<County> loadCounties() {
-        Cursor cursor = database.query(SqlConfig.TABLE_NAME_COUNTY, null, null, null, null, null, null);
+    public List<County> loadCounties(int cityId) {
+        Cursor cursor = database.query(SqlConfig.TABLE_NAME_COUNTY, null, SqlConfig.TABLE_COLUMN_NAME_COUNTY_CID + "=?", new String[]{"" + cityId}, null, null, null);
         if (cursor != null) {
             ArrayList<County> counties = new ArrayList<>();
             while (cursor.moveToNext()) {
