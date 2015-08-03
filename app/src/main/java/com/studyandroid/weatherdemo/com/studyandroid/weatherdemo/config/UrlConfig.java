@@ -18,6 +18,15 @@ public class UrlConfig {
     }
 
     /**
+     * 获取指定县镇的天气服务URL
+     * @param countyCode
+     * @return
+     */
+    public static String getWeatherServiceCountyURL(String countyCode) {
+        return WEATHER_SERVICE_AREA_BASE_URL + "city" + countyCode + WEATHER_SERVICE_AREA_URL_SUFFIX;
+    }
+
+    /**
      * 获取指定区县的天气服务URL
      *
      * @param weatherCode 天气代码

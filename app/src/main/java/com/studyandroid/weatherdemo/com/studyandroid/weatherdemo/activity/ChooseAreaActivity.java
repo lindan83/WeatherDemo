@@ -1,6 +1,8 @@
 package com.studyandroid.weatherdemo.com.studyandroid.weatherdemo.activity;
 
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -49,9 +51,19 @@ public class ChooseAreaActivity extends BaseActivity {
     private static final int LEVEL_CITY = 1;
     private static final int LEVEL_COUNTY = 2;
 
+    //是否是切换城市进入
+    private boolean isSwitchCity = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        isSwitchCity = getIntent().getBooleanExtra("is_switch_city", false);
+        if (WeatherUtil.hasSelectCity() && !isSwitchCity) {
+            //如果已经选择了城市，且不是从WeatherActivity跳转过来的才会跳转到WeatherActivity
+            WeatherActivity.show(this, "");
+            finish();
+            return;
+        }
         setContentView(R.layout.activity_choose_area);
         initViewAndBind();
     }
@@ -76,6 +88,8 @@ public class ChooseAreaActivity extends BaseActivity {
                 } else if (currentLevel == LEVEL_COUNTY) {
                     //保存当前选中的县镇并显示天气
                     selectedCounty = counties.get(position);
+                    WeatherActivity.show(ChooseAreaActivity.this, selectedCounty.getCountyCode());
+                    finish();
                 }
             }
         });
@@ -222,8 +236,18 @@ public class ChooseAreaActivity extends BaseActivity {
             //返回省份列表
             queryProvinces();
         } else {
+            //如果是切换城市进入的，退回到天气页面
+            if (isSwitchCity) {
+                WeatherActivity.show(this, "");
+            }
             //关闭
             finish();
         }
+    }
+
+    public static void show(Context from, boolean isSwitchCity) {
+        Intent intent = new Intent(from, ChooseAreaActivity.class);
+        intent.putExtra("is_switch_city", isSwitchCity);
+        from.startActivity(intent);
     }
 }
